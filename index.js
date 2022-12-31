@@ -66,17 +66,14 @@ app.use(bodyParser.json());
 
 app.use(multer({ storage: storage, fileFilter: fileFilter }).any('images'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store }));
+app.use(session({
+    secret: 'my secret', resave: false, saveUninitialized: false, store: store,
+}));
 
 // app.use(csrfProtection);
 app.use(flash());
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE')
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Authorization')
-    next();
-})
+
 
 
 app.use((req, res, next) => {
@@ -103,6 +100,13 @@ app.use(async (req, res, next) => {
         }
         next(err);
     }
+})
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Authorization');
+    next();
 })
 
 app.use('/users', authRoutes);

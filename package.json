@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "MONGO_USER=dinhngocnam MONGO_PASSWORD=884743Nam MONGO_DEFAULT_DATABASE=asignment3 node index.js",
+    "start": " node index.js",
     "start-sever": "npm index.js",
     "start:dev": "nodemon index.js"
   },
