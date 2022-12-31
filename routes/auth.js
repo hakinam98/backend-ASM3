@@ -11,4 +11,5 @@ router.get('/signup', authController.signup);
 router.get('/login', authController.login);
 
 router.get('/:userId', isAuth.AuthLogin, authController.getDetailData);
+
 module.exports = router;
