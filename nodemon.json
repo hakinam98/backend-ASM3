@@ -1,0 +1,7 @@
+{
+    "env": {
+        "MONGO_USER": "dinhngocnam",
+        "MONGO_PASSWORD": "884743Nam",
+        "MONGO_DEFAULT_DATABASE": "asignment3"
+    }
+}
