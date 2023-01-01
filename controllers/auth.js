@@ -60,7 +60,7 @@ exports.login = async (req, res, next) => {
         req.session.isLoggedIn = true;
         req.session.user = user;
         await req.session.save()
-        res.status(200).json({ message: 'Login successfully!', userId: user._id })
+        return res.status(200).json({ message: 'Login successfully!', userId: user._id })
 
     }
     catch (err) {
@@ -75,7 +75,7 @@ exports.getDetailData = async (req, res, next) => {
     try {
         const user = await User.findById(userId)
         if (!user) {
-            res.status(400).json({ message: 'User not found with this UserId!' })
+            return res.status(400).json({ message: 'User not found with this UserId!' })
         }
         res.status(200).json({ fullname: user.fullName })
     }

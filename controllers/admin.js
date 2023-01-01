@@ -1,14 +1,13 @@
 const User = require('../models/user');
 const Order = require('../models/order');
 const Product = require('../models/product');
-
 const bcrypt = require('bcryptjs');
 exports.login = async (req, res, next) => {
     const userData = req.body;
     try {
         const user = await User.findOne({ email: userData.email })
         if (!user) {
-            res.json({ message: 'Email not exist!' })
+            return res.json({ message: 'Email not exist!' })
         }
         else {
             const isEqual = await bcrypt.compare(userData.password, user.password)
@@ -17,7 +16,7 @@ exports.login = async (req, res, next) => {
             }
             else {
                 if (user.role === 'admin' || user.role === 'staff') {
-                    req.session.isAdminLoggedIn = true;
+                    req.session.isLoggedIn = true;
                     req.session.user = user;
                     await req.session.save()
                     res.json({
@@ -27,7 +26,7 @@ exports.login = async (req, res, next) => {
                     })
                 }
                 else {
-                    res.json({ message: 'You are not Admin or Staff!' })
+                    return res.json({ message: 'You are not Admin or Staff!' })
                 }
             }
         }

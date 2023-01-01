@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const authClient = require('../middleware/authclient');
+const isAuth = require('../middleware/is-auth');
 
 const cartController = require('../controllers/cart');
 
 
-router.post('/', authClient, cartController.carts)
-router.post('/add', authClient, cartController.addCart)
-router.put('/update', authClient, cartController.updateCart)
-router.delete('/delete', authClient, cartController.deleteCart)
+router.post('/', isAuth, cartController.carts)
+router.post('/add', isAuth, cartController.addCart)
+router.put('/update', isAuth, cartController.updateCart)
+router.delete('/delete', isAuth, cartController.deleteCart)
 
 module.exports = router

@@ -4,14 +4,14 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const csrf = require('csurf');
 const flash = require('connect-flash');
 const http = require('http');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const helmet = require('helmet');
-const compression = require('compression')
+const compression = require('compression');
+const cookieParser = require('cookie-parser');
 
 // const mongodbUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@asignment3.yqul0gy.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
 const mongodbUrl = process.env.MONGO_URL;
@@ -33,14 +33,15 @@ const app = express();
 
 app.use(helmet());
 app.use(compression());
-
+app.use(cors());
+app.use(bodyParser.json());
+// app.use(cookieParser());
 
 const store = new MongoDBStore({
     uri: mongodbUrl,
     collection: 'sessions'
 })
 
-// const csrfProtection = csrf();
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -62,26 +63,15 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-app.use(cors());
-app.use(bodyParser.json());
 
 app.use(multer({ storage: storage, fileFilter: fileFilter }).any('images'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(session({
-    secret: 'my secret', resave: false, saveUninitialized: false, store: store,
+    secret: 'my secret', resave: false, saveUninitialized: false, store: store
 }));
 
-// app.use(csrfProtection);
 app.use(flash());
 
-
-
-
-app.use((req, res, next) => {
-    res.locals.isAuthenticated = req.session.isLoggedIn;
-    // res.locals.csrfToken = req.csrfToken();
-    next();
-})
 
 app.use(async (req, res, next) => {
     if (!req.session.user) {
@@ -103,12 +93,20 @@ app.use(async (req, res, next) => {
     }
 })
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Authorization');
-    next();
-})
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Authorization');
+//     next();
+// })
+// app.use(function (req, res, next) {
+//     res.header('Access-Control-Allow-Credentials', true);
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+//     next();
+// });
+
 app.use('/users', authRoutes);
 app.use('/products', productRoutes);
 app.use('/carts', cartRoutes);

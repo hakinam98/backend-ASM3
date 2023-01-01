@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const authClient = require('../middleware/authclient');
+const isAuth = require('../middleware/is-auth');
 
 const historyController = require('../controllers/history');
 
-router.get('/', authClient, historyController.histories);
-router.get('/:orderId', authClient, historyController.detailHistory);
+router.get('/', isAuth, historyController.histories);
+router.get('/:orderId', isAuth, historyController.detailHistory);
 
 module.exports = router
