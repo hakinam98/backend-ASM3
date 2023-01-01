@@ -13,7 +13,8 @@ const path = require('path');
 const helmet = require('helmet');
 const compression = require('compression')
 
-const mongodbUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@asignment3.yqul0gy.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
+// const mongodbUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@asignment3.yqul0gy.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
+const mongodbUrl = `mongodb+srv://dinhngocnam:884743Nam@asignment3.yqul0gy.mongodb.net/assignment3?retryWrites=true&w=majority`;
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
@@ -108,7 +109,6 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Authorization');
     next();
 })
-
 app.use('/users', authRoutes);
 app.use('/products', productRoutes);
 app.use('/carts', cartRoutes);
@@ -126,7 +126,7 @@ app.use((error, req, res, next) => {
 })
 
 const server = http.createServer(app);
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', true);
 mongoose.connect(mongodbUrl)
     .then(result => {
         server.listen(process.env.PORT || 5000);
