@@ -126,7 +126,7 @@ app.use((error, req, res, next) => {
 })
 
 const server = http.createServer(app);
-
+mongoose.set('strictQuery', false);
 mongoose.connect(mongodbUrl)
     .then(result => {
         server.listen(process.env.PORT || 5000);
