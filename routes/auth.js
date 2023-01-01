@@ -2,7 +2,7 @@ const express = require('express');
 
 
 const authController = require('../controllers/auth');
-const isAuth = require('../middleware/is-auth');
+const authClient = require('../middleware/authclient');
 
 const router = express.Router();
 
@@ -10,6 +10,6 @@ router.get('/signup', authController.signup);
 
 router.get('/login', authController.login);
 
-router.get('/:userId', isAuth.AuthLogin, authController.getDetailData);
+router.get('/:userId', authClient, authController.getDetailData);
 
 module.exports = router;

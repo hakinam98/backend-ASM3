@@ -141,7 +141,6 @@ mongoose.connect(mongodbUrl)
                 console.log('Server add message!', data)
                 io.emit('receive_message', { data })
             })
-
         })
     })
     .catch(err => console.log(err))

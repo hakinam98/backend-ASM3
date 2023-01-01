@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const isAuth = require('../middleware/is-auth');
+const authClient = require('../middleware/authclient');
 
 const checkoutController = require('../controllers/checkout');
 
 
-router.post('/email', isAuth.AuthLogin, checkoutController.checkout);
+router.post('/email', authClient, checkoutController.checkout);
 
 module.exports = router
