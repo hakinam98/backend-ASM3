@@ -14,7 +14,7 @@ const helmet = require('helmet');
 const compression = require('compression')
 
 // const mongodbUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@asignment3.yqul0gy.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
-const mongodbUrl = `mongodb+srv://dinhngocnam:884743Nam@asignment3.yqul0gy.mongodb.net/asignment3?retryWrites=true&w=majority`;
+const mongodbUrl = process.env.MONGO_URL;
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
