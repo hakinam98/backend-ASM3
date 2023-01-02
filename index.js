@@ -71,7 +71,10 @@ const fileFilter = (req, file, cb) => {
 
 app.use(multer({ storage: storage, fileFilter: fileFilter }).any('files'));
 // app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/tmp', express.static('/tmp'));
+app.use('/tmp', (req, res, next) => {
+    express.static('/tmp');
+    res.setHeader('Cross-Origin-Resource-Policy', 'same-site')
+});
 
 app.use(session({
     secret: 'my secret', resave: false, saveUninitialized: false, store: store
