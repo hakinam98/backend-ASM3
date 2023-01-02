@@ -15,8 +15,8 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 
-const mongodbUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@asignment3.yqul0gy.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
-// const mongodbUrl = process.env.MONGO_URL;
+// const mongodbUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@asignment3.yqul0gy.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
+const mongodbUrl = process.env.MONGO_URL;
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
