@@ -5,7 +5,7 @@ const Order = require('../models/order');
 
 const transport = nodemailer.createTransport(sendgridTransport({
     auth: {
-        api_key: process.env.SENGRED
+        api_key: process.env.SENGRID
     }
 }))
 

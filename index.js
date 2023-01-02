@@ -12,11 +12,11 @@ const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const helmet = require('helmet');
 const compression = require('compression');
-const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+const Pusher = require('pusher');
 
-// const mongodbUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@asignment3.yqul0gy.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
-const mongodbUrl = process.env.MONGO_URL;
+const mongodbUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@asignment3.yqul0gy.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
+// const mongodbUrl = process.env.MONGO_URL;
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
@@ -34,14 +34,14 @@ const User = require('./models/user');
 const app = express();
 
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, '/tmp/access.log'), { flags: 'a' })
-// const accessLogStream = fs.createWriteStream('/tmp/access.log')
+const accessLogStream = fs.createWriteStream('/tmp/access.log')
 
 app.use(helmet());
 app.use(compression());
 app.use(cors({ origin: ['https://client-asm-3.vercel.app', 'https://admin-asm3.vercel.app', 'http://localhost:3000'] }));
 app.use(bodyParser.json());
 // app.use(cookieParser());
-// app.use(morgan('combined', { stream: accessLogStream }))
+app.use(morgan('combined', { stream: accessLogStream }))
 
 
 const store = new MongoDBStore({
@@ -136,6 +136,7 @@ mongoose.set('strictQuery', true);
 mongoose.connect(mongodbUrl)
     .then(result => {
         server.listen(process.env.PORT || 5000);
+
         const io = require('./socket').init(server);
         io.on('connection', socket => {
             console.log('Client connected!');

@@ -3,6 +3,10 @@
         "MONGO_USER": "dinhngocnam",
         "MONGO_PASSWORD": "884743Nam",
         "MONGO_DEFAULT_DATABASE": "asignment3",
-        "NODE_ENV": "production"
+        "NODE_ENV": "production",
+        "PUSHER_ID": "1532270",
+        "PUSHER_KEY": "da11910e4bd06b2d3d36",
+        "PUSHER_SECRET": "35941e2827bca3b00097",
+        "PUSHER_CLUSTER": "ap1"
     }
 }
