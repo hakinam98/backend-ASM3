@@ -52,7 +52,7 @@ const store = new MongoDBStore({
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'images');
+        cb(null, '/tmp/images');
     },
     filename: function (req, file, cb) {
         cb(null, uuidv4() + '.jpg')
@@ -72,7 +72,9 @@ const fileFilter = (req, file, cb) => {
 
 
 app.use(multer({ storage: storage, fileFilter: fileFilter }).any('files'));
-app.use('/images', express.static(path.join(__dirname, 'images')));
+// app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static('/tmp/images'));
+
 app.use(session({
     secret: 'my secret', resave: false, saveUninitialized: false, store: store
 }));
