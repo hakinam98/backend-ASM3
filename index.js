@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path')
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -8,13 +10,13 @@ const flash = require('connect-flash');
 const http = require('http');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
-const path = require('path');
 const helmet = require('helmet');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 
-// const mongodbUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@asignment3.yqul0gy.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
-const mongodbUrl = process.env.MONGO_URL;
+const mongodbUrl = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@asignment3.yqul0gy.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
+// const mongodbUrl = process.env.MONGO_URL;
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
@@ -31,11 +33,14 @@ const User = require('./models/user');
 
 const app = express();
 
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
 app.use(helmet());
 app.use(compression());
 app.use(cors());
 app.use(bodyParser.json());
 // app.use(cookieParser());
+app.use(morgan('combined', { stream: accessLogStream }))
+
 
 const store = new MongoDBStore({
     uri: mongodbUrl,
@@ -64,7 +69,7 @@ const fileFilter = (req, file, cb) => {
 }
 
 
-app.use(multer({ storage: storage, fileFilter: fileFilter }).any('images'));
+app.use(multer({ storage: storage, fileFilter: fileFilter }).any('files'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(session({
     secret: 'my secret', resave: false, saveUninitialized: false, store: store

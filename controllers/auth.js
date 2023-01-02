@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 exports.signup = async (req, res, next) => {
     const email = req.query.email;
@@ -57,10 +58,11 @@ exports.login = async (req, res, next) => {
             // error.status = 401;
             // throw error;
         }
+        const token = jwt.sign({ email: email, userId: user._id.toString() }, 'somesupersecretsecret', { expiresIn: '1h' })
         req.session.isLoggedIn = true;
         req.session.user = user;
         await req.session.save()
-        return res.status(200).json({ message: 'Login successfully!', userId: user._id })
+        return res.status(200).json({ message: 'Login successfully!', userId: user._id.toString(), token: token })
 
     }
     catch (err) {

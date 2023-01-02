@@ -2,6 +2,8 @@ const User = require('../models/user');
 const Order = require('../models/order');
 const Product = require('../models/product');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 exports.login = async (req, res, next) => {
     const userData = req.body;
     try {
@@ -19,10 +21,12 @@ exports.login = async (req, res, next) => {
                     req.session.isLoggedIn = true;
                     req.session.user = user;
                     await req.session.save()
+                    const token = jwt.sign({ email: user.email, userId: user._id.toString() }, 'somesupersecretsecret', { expiresIn: '1h' })
                     res.json({
                         userId: user._id,
                         role: user.role,
-                        message: 'Login successfully!'
+                        message: 'Login successfully!',
+                        token: token
                     })
                 }
                 else {
@@ -93,10 +97,12 @@ exports.getInforProduct = async (req, res, next) => {
 }
 
 exports.addProduct = async (req, res, next) => {
+    console.log(req.files)
     if (!req.files) {
-        const error = new Error('No image provided.');
-        error.statusCode = 422;
-        throw error
+        res.status(422).json({ message: 'No image provided.' })
+        // const error = new Error('No image provided.');
+        // error.statusCode = 422;
+        // throw error
     }
     const name = req.body.name;
     const category = req.body.category;
@@ -113,10 +119,10 @@ exports.addProduct = async (req, res, next) => {
         price: price,
         short_desc: shortDesc,
         long_desc: longDesc,
-        img1: 'http://localhost:5000/' + images[0],
-        img2: 'http://localhost:5000/' + images[1],
-        img3: 'http://localhost:5000/' + images[2],
-        img4: 'http://localhost:5000/' + images[3],
+        img1: 'https://backend-asm3-kappa.vercel.app/' + images[0],
+        img2: 'https://backend-asm3-kappa.vercel.app/' + images[1],
+        img3: 'https://backend-asm3-kappa.vercel.app/' + images[2],
+        img4: 'https://backend-asm3-kappa.vercel.app/' + images[3],
     })
     try {
         await product.save();
