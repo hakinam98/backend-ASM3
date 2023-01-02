@@ -33,13 +33,13 @@ const User = require('./models/user');
 
 const app = express();
 
-const accessLogStream = fs.createWriteStream(path.join(__dirname, '/access.log'), { flags: 'a' })
+// const accessLogStream = fs.createWriteStream(path.join(__dirname, '/access.log'), { flags: 'a' })
 app.use(helmet());
 app.use(compression());
 app.use(cors({ origin: ['https://client-asm-3.vercel.app', 'https://admin-asm3.vercel.app'] }));
 app.use(bodyParser.json());
 // app.use(cookieParser());
-app.use(morgan('combined', { stream: accessLogStream }))
+// app.use(morgan('combined', { stream: accessLogStream }))
 
 
 const store = new MongoDBStore({
@@ -70,7 +70,7 @@ const fileFilter = (req, file, cb) => {
 
 
 app.use(multer({ storage: storage, fileFilter: fileFilter }).any('files'));
-app.use('/images', express.static(path.join(__dirname, '/images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(session({
     secret: 'my secret', resave: false, saveUninitialized: false, store: store
 }));
