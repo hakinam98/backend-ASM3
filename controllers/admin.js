@@ -119,10 +119,10 @@ exports.addProduct = async (req, res, next) => {
         price: price,
         short_desc: shortDesc,
         long_desc: longDesc,
-        img1: 'https://backend-asm3-kappa.vercel.app/' + images[0],
-        img2: 'https://backend-asm3-kappa.vercel.app/' + images[1],
-        img3: 'https://backend-asm3-kappa.vercel.app/' + images[2],
-        img4: 'https://backend-asm3-kappa.vercel.app/' + images[3],
+        img1: 'https://backend-asm3-kappa.vercel.app' + images[0],
+        img2: 'https://backend-asm3-kappa.vercel.app' + images[1],
+        img3: 'https://backend-asm3-kappa.vercel.app' + images[2],
+        img4: 'https://backend-asm3-kappa.vercel.app' + images[3],
     })
     try {
         await product.save();
