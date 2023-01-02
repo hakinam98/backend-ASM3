@@ -34,14 +34,14 @@ const User = require('./models/user');
 const app = express();
 
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, '/tmp/access.log'), { flags: 'a' })
-const accessLogStream = fs.createWriteStream('/tmp/access.log')
+// const accessLogStream = fs.createWriteStream('/tmp/access.log')
 
 app.use(helmet());
 app.use(compression());
-app.use(cors({ origin: ['https://client-asm-3.vercel.app', 'https://admin-asm3.vercel.app'] }));
+app.use(cors({ origin: ['https://client-asm-3.vercel.app', 'https://admin-asm3.vercel.app', 'http://localhost:3000'] }));
 app.use(bodyParser.json());
 // app.use(cookieParser());
-app.use(morgan('combined', { stream: accessLogStream }))
+// app.use(morgan('combined', { stream: accessLogStream }))
 
 
 const store = new MongoDBStore({
@@ -51,9 +51,7 @@ const store = new MongoDBStore({
 
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, '/tmp/images');
-    },
+    destination: '/tmp',
     filename: function (req, file, cb) {
         cb(null, uuidv4() + '.jpg')
     }
@@ -73,7 +71,7 @@ const fileFilter = (req, file, cb) => {
 
 app.use(multer({ storage: storage, fileFilter: fileFilter }).any('files'));
 // app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/images', express.static('/tmp/images'));
+app.use('/images', express.static('/tmp'));
 
 app.use(session({
     secret: 'my secret', resave: false, saveUninitialized: false, store: store
