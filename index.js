@@ -41,7 +41,7 @@ app.use(compression());
 app.use(cors({ origin: ['https://client-asm-3.vercel.app', 'https://admin-asm3.vercel.app'] }));
 app.use(bodyParser.json());
 // app.use(cookieParser());
-// app.use(morgan('combined', { stream: accessLogStream }))
+app.use(morgan('combined', { stream: accessLogStream }))
 
 
 const store = new MongoDBStore({
