@@ -33,7 +33,9 @@ const User = require('./models/user');
 
 const app = express();
 
-// const accessLogStream = fs.createWriteStream(path.join(__dirname, '/access.log'), { flags: 'a' })
+// const accessLogStream = fs.createWriteStream(path.join(__dirname, '/tmp/access.log'), { flags: 'a' })
+const accessLogStream = fs.createWriteStream(path.join(__dirname, '/tmp/access.log'), { flags: 'a' })
+
 app.use(helmet());
 app.use(compression());
 app.use(cors({ origin: ['https://client-asm-3.vercel.app', 'https://admin-asm3.vercel.app'] }));
