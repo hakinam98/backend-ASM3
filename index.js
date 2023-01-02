@@ -34,7 +34,7 @@ const User = require('./models/user');
 const app = express();
 
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, '/tmp/access.log'), { flags: 'a' })
-const accessLogStream = fs.createWriteStream(path.join(__dirname, '/tmp/access.log'), { flags: 'a' })
+const accessLogStream = fs.createWriteStream('/tmp/access.log')
 
 app.use(helmet());
 app.use(compression());
